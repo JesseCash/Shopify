@@ -1,0 +1,159 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    {% comment %} Start Google Site Verification {% endcomment %}
+    <meta name="google-site-verification" content="bQ12l5BK5_ofcAx1Azqlb0dkjK7ug6s5J4KTWy7XFEs" />
+    {% comment %} End Google Site Verification {% endcomment %}
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+
+    {{ 'jquery.min.js' | asset_url | script_tag }}
+    {{ 'jquery-ui.js' | asset_url | script_tag }}
+
+    <!-- TrustBox script -->
+    <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+    <!-- End TrustBox script -->
+
+    {{ content_for_header }}
+
+    {% style %}
+      @import url('https://p.typekit.net/p.css?s=1&k=ons1ejc&ht=tk&f=18438.18445&a=86597531&app=typekit&e=css');
+
+      @font-face {
+        font-family: 'azo-sans-web';
+        src: url('https://use.typekit.net/af/9aa4fe/000000000000000000013f4e/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3')
+            format('woff2'),
+          url('https://use.typekit.net/af/9aa4fe/000000000000000000013f4e/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3')
+            format('woff'),
+          url('https://use.typekit.net/af/9aa4fe/000000000000000000013f4e/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3')
+            format('opentype');
+        font-display: auto;
+        font-style: normal;
+        font-weight: 700;
+        font-stretch: normal;
+      }
+
+      @font-face {
+        font-family: 'azo-sans-web';
+        src: url('https://use.typekit.net/af/9dc3b1/000000000000000000013f8f/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3')
+            format('woff2'),
+          url('https://use.typekit.net/af/9dc3b1/000000000000000000013f8f/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3')
+            format('woff'),
+          url('https://use.typekit.net/af/9dc3b1/000000000000000000013f8f/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3')
+            format('opentype');
+        font-display: auto;
+        font-style: normal;
+        font-weight: 400;
+        font-stretch: normal;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+
+      html {
+        box-sizing: border-box;
+        font-size: 16px;
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.5;
+        font-family: 'azo-sans-web';
+        font-style: normal;
+        font-weight: 400;
+        overflow-x: hidden;
+      }
+    {% endstyle %}
+
+    {{ 'slick.css' | asset_url | stylesheet_tag }}
+    {{ 'slick-theme.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+    {% comment %} Start Clarity {% endcomment %}
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "eysz0fugu7");
+    </script>
+    {% comment %} End Clarity {% endcomment %}
+
+    {% comment %} Start Google Tag Manager {% endcomment %}
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KR69S8R');</script>
+    {% comment %} End Google Tag Manager {% endcomment %}
+
+    {% if customer %}
+      {% if template contains 'index' %}
+        <script>window.location.href = '/products/fuel-box';</script>
+      {% endif %}
+    {% else %}
+      {% unless template contains 'contact' or template contains 'menu' or template contains 'shipping-policy' or template contains 'customer' or canonical_url contains 'challenge' %}
+        <script>
+          //console.log(window.location.href);
+          if (window.location.href.includes("shipping-policy") ){
+            
+          } else {
+            window.location.href = '/account/login';  
+          }
+          
+        </script>
+      {% endunless %}
+    {% endif %}
+  </head>
+
+  <body class="{% if template contains 'product' %}template-product{% endif %}">
+    {% comment %} Start Google Tag Manager {% endcomment %}
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KR69S8R"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    {% comment %} End Google Tag Manager {% endcomment %}
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    <script src="{{ 'slick.min.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+
+    {% unless template contains 'product' %}
+      {% render 'js-tidio' %}
+    {% endunless %}
+  </body>
+</html>
