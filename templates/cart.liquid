@@ -1,0 +1,14 @@
+{% layout none %}
+{% if cart.item_count > 0 %}
+  {% for item in cart.items %}
+    {% if item.title contains 'Fuel Box' %}
+      {% if item.title contains 'Taster' %}
+        <script>window.location.href = '/products/taster-box';</script>
+      {% else %}
+        <script>window.location.href = '/products/fuel-box';</script>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% else %}
+  <script>window.location.href = '/products/fuel-box';</script>
+{% endif %}

@@ -1,0 +1,106 @@
+<div class="account-nav">
+  <div class="page-container">
+    <div class="account-nav__header">
+      <h3>Account</h3>
+      <h4>Welcome back, {{ customer.first_name }} {{ customer.last_name }}</h4>
+    </div>
+
+    {% if customer.metafields.subscriptions.customer_string %}
+      <div class="account-nav__list">
+        <a class="nav-list__item" href="/account">Your Fuel</a>
+        <a class="nav-list__item nav-list__item--subscription" href="/tools/recurring/login">Subscriptions</a>
+        <a class="nav-list__item nav-list__item--active" href="/account?view=orders">Order History</a>
+        <a class="nav-list__item nav-list__item--logout underline" href="/account/logout">Logout</a>
+      </div>
+      <script>
+        async function fetchRcCustomer() {
+          try {
+            const res = await fetch(
+              '/tools/recurring/get_rc_token/{{ customer.id }}'
+            )
+            .then((res) => res.clone().text())
+            .then((res) => JSON.parse(res.match(/{"rc_customer":.*}}/g)[0]));
+            console.log(res);	
+            document.querySelector('.nav-list__item--subscription').setAttribute('href', '/tools/recurring/portal/' + res.rc_customer.hash + '/subscriptions?token=' + res.rc_customer.token);
+            document.querySelector('.subscription-notice__link').setAttribute('href', '/tools/recurring/portal/' + res.rc_customer.hash + '/subscriptions?token=' + res.rc_customer.token);
+            return res.rc_customer;
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        
+        fetchRcCustomer();
+      </script>
+    {% else %}
+      <div class="account-nav__list">
+        <a class="nav-list__item" href="/account">Your Fuel</a>
+        <a class="nav-list__item nav-list__item--active" href="/account?view=orders">Order History</a>
+        <a class="nav-list__item nav-list__item--logout underline" href="/account/logout">Logout</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="order-history">
+  <div class="page-container">
+    <h3>Order History</h3>
+    <div class="order-history__table">
+      {%- if customer.orders.size > 0 -%}
+        {% paginate customer.orders by 100 %}
+          {%- if customer.orders.size > 0 -%}
+            <table role="table">
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th id="ColumnOrder" scope="col" role="columnheader">{{ 'customer.orders.order_number' | t }}</th>
+                  <th id="ColumnDate" scope="col" role="columnheader">{{ 'customer.orders.date' | t }}</th>
+                  <th id="ColumnPayment" scope="col" role="columnheader">{{ 'customer.orders.payment_status' | t }}</th>
+                  <th id="ColumnFulfillment" scope="col" role="columnheader">
+                    {{ 'customer.orders.fulfillment_status' | t }}
+                  </th>
+                  <th id="ColumnTotal" scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                {%- for order in customer.orders -%}
+                  <tr role="row">
+                    <td
+                      id="RowOrder"
+                      role="cell"
+                      headers="ColumnOrder"
+                      data-label="{{ 'customer.orders.order_number' | t }}"
+                    >
+                      {{ order.name }}
+                    </td>
+                    <td headers="RowOrder ColumnDate" role="cell" data-label="{{ 'customer.orders.date' | t }}">
+                      {{ order.created_at | time_tag: format: 'date' }}
+                    </td>
+                    <td
+                      headers="RowOrder ColumnPayment"
+                      role="cell"
+                      data-label="{{ 'customer.orders.payment_status' | t }}"
+                    >
+                      {{ order.financial_status_label }}
+                    </td>
+                    <td
+                      headers="RowOrder ColumnFulfillment"
+                      role="cell"
+                      data-label="{{ 'customer.orders.fulfillment_status' | t }}"
+                    >
+                      {{ order.fulfillment_status_label | replace: 'Unfulfilled', 'Processing' | replace: 'Fulfilled', 'Delivered' }}
+                    </td>
+                    <td headers="RowOrder ColumnTotal" role="cell" data-label="{{ 'customer.orders.total' | t }}">
+                      {{ order.total_net_amount | money }}
+                    </td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          {%- else -%}
+          {%- endif -%}
+        {% endpaginate %}
+      {%- else -%}
+        <p>{{ 'customer.orders.none' | t }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

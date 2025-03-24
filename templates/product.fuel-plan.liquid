@@ -1,0 +1,18 @@
+{% section 'product-fuelplan-qty' %}
+{% section 'product-fuelplan-day' %}
+{% section 'product-fuelplan-meal' %}
+{% section 'product-fuelplan-footer' %}
+
+{% render 'loading-overlay' %}
+{% render 'js-chefs-selection' %}
+
+{% if cart.item_count > 0 %}
+  {% for item in cart.items %}
+    {% unless item.product.title contains 'Taster' %}
+      {% if item.product.title contains 'Fuel Box' %}
+        {% render 'js-checkout-reminder' %}
+        {% break %}
+      {% endif %}
+    {% endunless %}
+  {% endfor %}
+{% endif %}

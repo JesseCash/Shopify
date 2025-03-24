@@ -1,0 +1,16 @@
+{% section 'product-tasterplan-qty' %}
+{% section 'product-tasterplan-day' %}
+{% section 'product-tasterplan-meal' %}
+{% section 'product-tasterplan-footer' %}
+
+{% render 'loading-overlay' %}
+{% render 'js-chefs-selection' %}
+
+{% if cart.item_count > 0 %}
+  {% for item in cart.items %}
+    {% if item.product.title contains 'Taster' %}
+      {% render 'js-checkout-reminder' %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
