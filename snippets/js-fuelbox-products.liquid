@@ -1,0 +1,43 @@
+<script>
+  {% if mod_tue != nil %}
+    window.fb_tue = [];
+    {% for variant in mod_tue.variants %}
+      window.fb_tue.push({id: '{{ variant.id }}', quantity: 1{% for selling_plan_group in mod_tue.selling_plan_groups %}{% for plan in selling_plan_group.selling_plans %}, selling_plan: '{{ plan.id  }}'{% endfor %}{% endfor %} });
+    {% endfor %}
+  {% endif %}
+
+  {% if mod_wed != nil %}
+    window.fb_wed = [];
+    {% for variant in mod_wed.variants %}
+      window.fb_wed.push({id: '{{ variant.id }}', quantity: 1{% for selling_plan_group in mod_wed.selling_plan_groups %}{% for plan in selling_plan_group.selling_plans %}, selling_plan: '{{ plan.id  }}'{% endfor %}{% endfor %} });
+    {% endfor %}
+  {% endif %}
+
+  {% if mod_thu != nil %}
+    window.fb_thu = [];
+    {% for variant in mod_thu.variants %}
+      window.fb_thu.push({id: '{{ variant.id }}', quantity: 1{% for selling_plan_group in mod_thu.selling_plan_groups %}{% for plan in selling_plan_group.selling_plans %}, selling_plan: '{{ plan.id  }}'{% endfor %}{% endfor %} });
+    {% endfor %}
+  {% endif %}
+
+  {% if mod_fri != nil %}
+    window.fb_fri = [];
+    {% for variant in mod_fri.variants %}
+      window.fb_fri.push({id: '{{ variant.id }}', quantity: 1{% for selling_plan_group in mod_fri.selling_plan_groups %}{% for plan in selling_plan_group.selling_plans %}, selling_plan: '{{ plan.id  }}'{% endfor %}{% endfor %} });
+    {% endfor %}
+  {% endif %}
+
+  {% if mod_sat != nil %}
+    window.fb_sat = [];
+    {% for variant in mod_sat.variants %}
+      window.fb_sat.push({id: '{{ variant.id }}', quantity: 1{% for selling_plan_group in mod_sat.selling_plan_groups %}{% for plan in selling_plan_group.selling_plans %}, selling_plan: '{{ plan.id  }}'{% endfor %}{% endfor %} });
+    {% endfor %}
+  {% endif %}
+
+  {% if mod_sun != nil %}
+    window.fb_sun = [];
+    {% for variant in mod_sun.variants %}
+      window.fb_sun.push({id: '{{ variant.id }}', quantity: 1{% for selling_plan_group in mod_sun.selling_plan_groups %}{% for plan in selling_plan_group.selling_plans %}, selling_plan: '{{ plan.id  }}'{% endfor %}{% endfor %} });
+    {% endfor %}
+  {% endif %}
+</script>

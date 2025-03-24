@@ -1,0 +1,25 @@
+<script id="chef-json">
+  {% assign all = collections[settings.chef_collection_all] %}
+  window.chef_collection_all = [];
+  {% for product in all.products %}
+    window.chef_collection_all.push({{ product.id }});
+  {% endfor %}
+
+  {% assign gluten = collections[settings.chef_collection_gluten] %}
+  window.chef_collection_gluten = [];
+  {% for product in gluten.products %}
+    window.chef_collection_gluten.push({{ product.id }});
+  {% endfor %}
+
+  {% assign dairy = collections[settings.chef_collection_dairy] %}
+  window.chef_collection_dairy = [];
+  {% for product in dairy.products %}
+    window.chef_collection_dairy.push({{ product.id }});
+  {% endfor %}
+
+  {% assign meat = collections[settings.chef_collection_meat] %}
+  window.chef_collection_meat = [];
+  {% for product in meat.products %}
+    window.chef_collection_meat.push({{ product.id }});
+  {% endfor %}
+</script>

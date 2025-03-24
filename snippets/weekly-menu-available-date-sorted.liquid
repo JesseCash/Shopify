@@ -1,0 +1,25 @@
+{%- liquid
+    assign today_time = 'now' | date: '%s' | plus: 0
+    assign oneday_seconds = 24 | times: 3600
+    assign sixday_seconds = oneday_seconds | times: 6
+    assign menu_start_choose_time = 'now' | date: '%s' | plus: sixday_seconds
+    
+  
+    assign weekly-meals-available-date-str = ""
+    for i in (1..5)
+      assign collection_key = "weekly-meals-" | append: i
+      assign start_date = collections[collection_key].metafields.custom.menu_available_date.value
+      assign end_date = start_date | date: '%s' | plus: sixday_seconds
+      
+      if end_date > menu_start_choose_time
+        if weekly-meals-available-date-str != ""
+          assign weekly-meals-available-date-str = weekly-meals-available-date-str | append: ","
+        endif
+        assign weekly-meals-available-date-str = weekly-meals-available-date-str | append: start_date
+      endif
+    endfor
+      
+    assign weekly-meals-available-date-sorted = weekly-meals-available-date-str | split: "," | sort
+
+    
+%}

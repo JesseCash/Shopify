@@ -1,0 +1,32 @@
+<!-- /snippets/button -->
+{% if large %}
+  {% assign buttonSize = 'button large-button' %}
+{% elsif small %}
+  {% assign buttonSize = 'button small-button' %}
+{% else %}
+  {% assign buttonSize = 'button' %}
+{% endif %}
+
+{% if primary %}
+  {% assign appearence = 'primary-btn' %}
+{% elsif secondary %}
+  {% assign appearence = 'secondary-btn' %}
+{% elsif bordered %}
+  {% assign appearence = 'bordered-btn' %}
+{% elsif borderedDark %}
+  {% assign appearence = 'bordered-dark-btn' %}
+{% elsif white %}
+  {% assign appearence = 'white-btn' %}
+{% endif %}
+
+{% if link %}<a href="{{ link }}" class="button-wrap-link">{% endif %}
+<button
+  {% if buttonType %}
+    type="{{buttonType}}"
+  {% endif %}
+  class="{{ buttonSize }} {{ appearence }} {{ className }}"
+  {{ attributes }}
+>
+  {{ text }}
+</button>
+{% if link %}</a>{% endif %}

@@ -1,0 +1,90 @@
+<div class="order-summary-inner">
+  <button class="mobile-close-summary desktop-hidden">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="40" height="40" rx="20" fill="black"></rect>
+      <path d="M14.1665 14.5199L25.8338 26.1872" stroke="white" stroke-width="2.5"></path>
+      <path d="M25.8335 14.5199L14.1662 26.1872" stroke="white" stroke-width="2.5"></path>
+    </svg>
+  </button>
+
+  <div class="summary-head">
+    <div class="meals-state state">
+      <h6 class="bold">Meals</h6>
+
+      <span class="qty-calc bold">
+        <span class="current-qty">0</span>
+        <span class="divider">/</span>
+        <span class="limit-qty">0</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="summary-progressbar">
+    <span class="progress-val"></span>
+  </div>
+
+  <div class="summary-description">
+    <p class="add-more-desc show">Add <span class="value bold">0</span> more meals to complete your order</p>
+
+    <p class="too-many-desc">You have too many meals selected, please remove some meals to continue</p>
+
+    <p class="completed-desc">Your order is ready to complete</p>
+  </div>
+
+  <div class="summary-details">
+    <div class="empty-summary">
+      <h4 class="title bold">Fuelin’ indecisive?</h4>
+      <p class="desc">Choose our Chef's Selection for our favourite recommendations.</p>
+
+      {%
+        render 'button'
+        with
+        borderedDark: true,
+        className: 'meal-chef-selection'
+        text: "Chef's Selection",
+      %}
+    </div>
+
+    <div class="added-detail-summary">
+      <div class="qty-ctrl-clone hidden">
+        <div class="qty-selection-wrap">
+          <button class="qty-ctrl-btn qty-minus">
+            <svg
+              class="pointer-events-none"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="24" height="24" rx="12" fill="black"></rect>
+              <path d="M7.2002 12H17.1002" stroke="white" stroke-width="2.5"></path>
+            </svg>
+          </button>
+
+          <span class="bold"><span class="value">1</span></span>
+
+          <button class="qty-ctrl-btn qty-plus">
+            <svg
+              class="pointer-events-none"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="24" height="24" rx="12" fill="black"></rect>
+              <path d="M7.2002 12.15H17.1002" stroke="white" stroke-width="2.5"></path>
+              <path d="M12.1504 7.20001L12.1504 17.1" stroke="white" stroke-width="2.5"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="detail-lists">
+      </div>
+    </div>
+  </div>
+
+  <button class="button secondary-btn rc-update-fuel js-rc-update-fuel" disabled>Update Your Fuel</button>
+</div>

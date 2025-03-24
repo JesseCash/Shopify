@@ -1,0 +1,40 @@
+{% assign tasterCheckout = false %}
+{% assign mealPrice = 0 %}
+{% assign extraPrice = 0 %}
+{% assign shippingPrice = 'P&P £4.95' %}
+
+{% if cart.item_count > 0 %}
+  {% assign mealPrice = cart.total_price %}
+{% endif %}
+
+<div class="order-checkout">
+  <div class="checkout-info {% if isTaster == false and mealPrice == 0 %}hidden{% endif %}">
+    <span class="total-price">
+      Total {{ cart.currency.symbol -}}
+      {% if isTaster == true %}
+        <span class="value">{{ product.price | divided_by: 100  }}</span>
+      {% else %}
+        <span class="value">{% if mealPrice > 0 %}{{ cart.total_price | money_without_currency }}{% else %}0{% endif %}</span>
+      {% endif %}
+    </span>
+
+    <div class="unit-price{% if isTaster == false %} fuel-plan-price{% endif %}">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0.5" y="0.5" width="15" height="15" rx="7.5" stroke="white"></rect>
+        <path d="M4.40039 7.99998L6.80039 10.4L11.6004 5.59998" stroke="white" stroke-width="2"></path>
+      </svg>
+      <span class="desc">
+        {{ shippingPrice }}
+      </span>
+    </div>
+  </div>
+
+  <button
+    class="plan-checkout-btn {% if isTaster %}js-checkout-btn{% else %}js-checkout-btn{% endif %}"
+    {% if mealPrice == 0 %}
+      disabled
+    {% endif %}
+  >
+    Checkout
+  </button>
+</div>

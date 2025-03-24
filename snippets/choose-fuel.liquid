@@ -1,0 +1,60 @@
+{% assign all_meals_collection = collections['all-meals'] %}
+{% assign checkoutMealsQty = 0 %}
+
+<div class="page-container">
+  <button class="close-popup">
+    <svg width="40" height="44" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="0.176453" width="40" height="42.9412" rx="20" fill="#F2F2F2"></rect>
+      <path d="M14.166 15.764L25.8333 28.2892" stroke="black" stroke-width="2.5"></path>
+      <path d="M25.834 15.764L14.1667 28.2892" stroke="black" stroke-width="2.5"></path>
+    </svg>
+  </button>
+
+  <input type="hidden" id="fuel-meals-qty" class="total-meals-limit" value="0">
+  <input
+    type="hidden"
+    class="current-meals-qty"
+    value="0"
+  >
+  <input type="hidden" class="extra-meals-qty" value="0">
+  <input type="hidden" class="total-meals-price" value="0">
+
+  <div class="product-meals meals-selection fuel-meals-selection">
+    <div class="meals-selection-wrap">
+      <div class="main-meal-selection">
+        <h3 class="title bold">CHOOSE YOUR MEALS</h3>
+        <p class="description">Select your meals below for this week. If you don't select your meal, Fuel Hub will automatically send you a chef’s selection based on your preferences.</p>
+
+        {% render 'meal-filter' with collection: all_meals_collection %}
+
+        <div class="meals-grid-wrap">
+          {% paginate all_meals_collection.products by 100 %}
+            {% for product in all_meals_collection.products limit: 100 %}
+              {% render 'choose-meal' with product: product %}
+            {% endfor %}
+          {% endpaginate %}
+        </div>
+      </div>
+
+      <button class="button secondary-btn rc-update-fuel js-rc-update-fuel" disabled="">Update Your Fuel</button>
+    </div>
+
+    <div class="order-summary fuel-summary">
+      {% render 'choose-summary' %}
+    </div>
+
+    <button class="desktop-hidden mobile-summary-nav">
+      <div class="summary-head">
+        <h6 class="bold">{% render 'svg-icon-arrow-up' %}Summary</h6>
+
+        <span class="qty-calc bold">
+          <span class="current-qty">{{ checkoutMealsQty }}</span>
+          <span class="divider">/</span>
+          <span class="limit-qty">{{ checkoutMealsQty }}</span>
+        </span>
+      </div>
+    </button>
+  </div>
+</div>
+
+{% render 'js-chefs-selection' %}

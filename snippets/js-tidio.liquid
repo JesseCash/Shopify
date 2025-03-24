@@ -1,0 +1,66 @@
+<script src="//code.tidio.co/kghd3davtifpiq4qb96leebrdfmwksps.js?extensionVersion=1.1.0" async=""></script>
+
+<script>
+document.tidioIdentify = {
+  shopify_id: "{{ customer.id }}",
+  name: "{{ customer.name }}",
+  email: "{{ customer.email }}",
+};
+</script>
+    
+    
+<script>
+  (function() {
+    function onTidioChatApiReady() {
+      tidioChatApi.setContactProperties({
+  shopify_id: "{{ customer.id }}",
+  first_name: "{{ customer.first_name }}",
+  last_name: "{{ customer.last_name }}",
+  orders_count: "{{ customer.orders_count }}",
+  total_spent: "{{ customer.total_spent }}",
+  order_id: "{{ customer.last_order.order_number }}",
+  order_url: "{{ customer.last_order.order_status_url }}",
+  customer_url: "{{ customer.last_order.customer_url }}",
+  tracking_url: "{{ fulfillment.tracking_url }}",
+  fulfillment_status: "{{ order.fulfillment_status_label }}",
+  customer_info: "{{ checkout.customer.name }}"
+  
+});
+    }
+    
+    
+    if (window.tidioChatApi) {
+      window.tidioChatApi.on('ready', onTidioChatApiReady)
+    } else {
+      document.addEventListener('tidioChat-ready', onTidioChatApiReady);
+    }
+  })();
+</script>
+
+<script>(function() {
+	function onTidioChatApiReady() {
+		window.tidioChatApi.on("messageFromOperator", (message) => {
+			if (message && message.message.includes("Thank you so much for contacting Fuel Hub")) {
+				setTimeout(() => {
+                    window.addEventListener('beforeunload', function() {
+						const stateKey = 'tidio_state_kghd3davtifpiq4qb96leebrdfmwksps';
+						const state = JSON.parse(localStorage.getItem(stateKey));
+						console.log(state.messages)
+						const newState = {
+							...state,
+							messages: []
+						}
+						localStorage.setItem(stateKey, JSON.stringify(newState));
+				}, 2 * 1000);
+                });
+			}
+		});
+	}
+
+	if (window.tidioChatApi) {
+		window.tidioChatApi.on("ready", onTidioChatApiReady);
+	} else {
+		document.addEventListener("tidioChat-ready", onTidioChatApiReady);
+	}
+})();
+</script>

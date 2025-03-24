@@ -1,0 +1,39 @@
+{% assign breakfasts_collection = collections['breakfasts'] %}
+{% assign snacks_collection = collections['snacks'] %}
+{% assign desserts_collection = collections['desserts'] %}
+{% assign merch_collection = collections['merch'] %}
+
+<div class="rc-upsells">
+  <h3>ADD MORE FUEL?</h3>
+  <p>Optional extra's below. This is a one time only purchase, not included in your weekly Fuel Box subscription. Extra's will be delivered in your next Fuel Hub delivery.</p>
+  
+  <div class="meals-grid-wrap grid-3-col">
+    <div class="meals-grid__heading">Breakfasts</div>
+    {% paginate breakfasts_collection.products by 100 %}
+      {% for product in breakfasts_collection.products limit: 100 %}
+        {% render 'rc-upsell' with product: product %}
+      {% endfor %}
+    {% endpaginate %}
+
+    <div class="meals-grid__heading">Snacks</div>
+    {% paginate snacks_collection.products by 100 %}
+      {% for product in snacks_collection.products limit: 100 %}
+        {% render 'rc-upsell' with product: product %}
+      {% endfor %}
+    {% endpaginate %}
+    
+    <div class="meals-grid__heading">Desserts</div>
+    {% paginate desserts_collection.products by 100 %}
+      {% for product in desserts_collection.products limit: 100 %}
+        {% render 'rc-upsell' with product: product %}
+      {% endfor %}
+    {% endpaginate %}
+    
+    <div class="meals-grid__heading">Merch</div>
+    {% paginate merch_collection.products by 100 %}
+      {% for product in merch_collection.products limit: 100 %}
+        {% render 'rc-upsell' with product: product  %}
+      {% endfor %}
+    {% endpaginate %}
+  </div>
+</div>

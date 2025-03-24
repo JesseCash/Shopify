@@ -1,0 +1,109 @@
+{% assign preference = 'All' %}
+{% for attribute in checkout.attributes %}
+  {% if attribute.first == 'Preference' %}
+    {% assign preference = attribute.last %}
+  {% endif %}
+{% endfor %}
+<script>
+  (function($) {
+    $(document).on("page:load page:change", function () {
+      $(".step__sections").prepend('<div class="trustpilot-widget" data-locale="en-GB" data-template-id="53aa8912dec7e10d38f59f36" data-businessunit-id="5e14a5871dbbcf000152d1cf" data-style-height="140px" data-style-width="100%" data-theme="light" data-stars="4,5" data-review-languages="en"><a href="https://uk.trustpilot.com/review/www.fuelhub.co.uk" target="_blank" rel="noopener">Trustpilot</a></div>');
+      if (Shopify.Checkout.step == 'contact_information') {
+        if ($('.section--allergy').length == 0) {
+          $('.step__sections').append(`
+            <div class="section section--allergy">
+              <div class="section__header">
+                <h2 class="section__title" id="section-delivery-title">
+                  Do you have any allergies?
+                </h2>
+              </div>
+              <div class="section__content">
+                <div class="fieldset">
+                  <div class="field field--required field--show-floating-label">
+                  <div class="field__input-wrapper field__input-wrapper--select">
+                    <label class="field__label field__label--visible">Allergies</label>
+                    <select class="field__input field__input--allergy field__input--select" aria-required="true">
+                      <option value="No" >No</option>
+                      <option value="Yes" {% if checkout.note %}selected{% endif %}>Yes</option>
+                    </select>
+                    <div class="field__caret">
+                      <svg class="icon-svg icon-svg--color-adaptive-lighter icon-svg--size-10 field__caret-svg" role="presentation" aria-hidden="true" focusable="false"> <use xlink:href="#caret-down"></use> </svg>
+                    </div>
+                  </div>
+                  <textarea style="display: none;" name="checkout[note]" value="{{ checkout.note }}" placeholder="Please provide details here..."></textarea>
+                </div>
+              </div>
+            </div>
+          `);
+        }
+        
+        if ($('.section--preference').length == 0) {
+          $('.step__sections').append(`
+            <div class="section section--preference">
+              <div class="section__header">
+                <h2 class="section__title" id="section-preference-title">
+                  Preference
+                </h2>
+              </div>
+              <div class="section__content">
+                <div class="fieldset">
+                  <div class="field field--required field--show-floating-label">
+                  <div class="field__input-wrapper field__input-wrapper--select">
+                    <label class="field__label field__label--visible">Allergies</label>
+                    <select class="field__input field__input--preference field__input--select" aria-required="true" name="checkout[attributes][Preference]">
+                      <option value="All" {% if preference == 'All' %}selected{% endif %}>All</option>
+                      <option value="Gluten Free" {% if preference == 'Gluten Free' %}selected{% endif %}>Gluten Free</option>
+                      <option value="Dairy Free" {% if preference == 'Dairy Free' %}selected{% endif %}>Dairy Free</option>
+                      <option value="Meat Free" {% if preference == 'Meat Free' %}selected{% endif %}>Meat Free</option>
+                    </select>
+                    {% for attribute in checkout.attributes %}
+                      {% unless attribute.first == 'Preference' %}
+                        <input type="hidden" name="checkout[attributes][{{ attribute.first }}]" value="{{ attribute.last }}">
+                      {% endunless %}
+                    {% endfor %}
+                    <div class="field__caret">
+                      <svg class="icon-svg icon-svg--color-adaptive-lighter icon-svg--size-10 field__caret-svg" role="presentation" aria-hidden="true" focusable="false"> <use xlink:href="#caret-down"></use> </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `);
+        }
+        
+      }
+
+      if (Shopify.Checkout.step == 'contact_information' || Shopify.Checkout.step == 'shipping_method') {
+        if ($('.subscription-info').length == 0) {
+          $('.order-summary__sections').append(`
+            {% comment %}
+            <a class="live-chat" href="javascript:void(0);" onclick="window.tidioChatApi.open();">
+              Have a question? <u>Talk to our live chat support now.</u>
+            </a>
+            {% endcomment %}
+            <div class="subscription-info">
+              <p><strong>FREE UK delivery Wednesday & Saturday, Sunday £4.95.</strong></p>
+              <p><strong>How a Fuel Hub subscription works</strong></p>
+              <ul>                
+                <li>Weekly Fuel Box delivered direct to your door via DPD.</li>
+                <li>Choose your meals weekly from our monthly changing menu.</li>
+                <li>You control your account. Pause or cancel at any time.</li>
+                <li>Payment taken weekly on your payment method provided.</li>
+              </ul>
+            </div>
+          `);
+        }
+      }
+    });
+
+    $(document).on('change', '.field__input--allergy', function () {
+      if ($(this).val() == 'Yes') {
+        $(this).parents('.fieldset').find('textarea').css('display', 'block');
+      }
+      else {
+        $(this).parents('.fieldset').find('textarea').val('');
+        $(this).parents('.fieldset').find('textarea').css('display', 'none');
+      }
+    });
+  })(Checkout.$);
+</script>

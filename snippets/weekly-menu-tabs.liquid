@@ -1,0 +1,12 @@
+<div class="weekly-meals-date-tabs">
+    <div class="label">Weekly Menu: </div>
+    {% for start_date in weekly-meals-available-date-sorted limit:4 %}
+      {% assign end_date = start_date | date: '%s' | plus: sixday_seconds %}
+        <div data-idx="{{- forloop.index -}}" data-startdate="{{ start_date | date: '%m/%d/%Y' }}" data-enddate="{{ end_date | date: '%m/%d/%Y' }}" id="weekly-meals-date-tab-{{- forloop.index -}}" 
+          class="weekly-meals-date-tab {% if forloop.index==1 %}active{% endif %}">
+          {% include 'svg-delivery' %}
+          
+          {{ start_date | date: '%d/%m/%y' }} to {{ end_date | date: '%d/%m/%y' }}
+        </div> 
+    {% endfor %}
+</div>

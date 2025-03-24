@@ -1,0 +1,94 @@
+<style>
+  {% for item in checkout.line_items %}
+    {% if item.product.tags contains 'meal' %}
+      .product[data-product-id="{{ item.product.id }}"] .product__price {
+        /*opacity: 0;
+        padding: 0;*/
+      }
+    {% endif %}
+  {% endfor %}
+
+  .section--allergy textarea {
+    height: 60px;
+    background-color: white;
+    color: #333333;
+    padding: 10px;
+    border: 1px solid #d9d9d9;
+    background-clip: padding-box;
+    border-radius: 5px;
+    display: block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.9285714286em 0.7857142857em;
+    word-break: normal;
+    line-height: inherit;
+    margin-top: 10px;
+  }
+
+  .subscription-info {
+    padding: 1rem;
+    background: white;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #D7D7D7;
+  }
+
+  .subscription-info p {
+    margin-bottom: 0.5rem;  
+  }
+
+  .subscription-info li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 0.3rem;
+  }
+
+  .subscription-info li:before {
+    position: absolute;
+    top: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    left: 6px;
+    display: block;
+    content: '';
+    background: #000;
+  }
+
+  .live-chat {
+    padding: 1rem;
+    background: white;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #D7D7D7;
+  }
+
+  .section.section--allergy,
+  .section.section--preference {
+    padding-top: 1em;
+  }
+
+  .section.section--allergy .section__header,
+  .section.section--preference .section__header {
+    margin-bottom: 5px;
+  }
+
+  .total-line--shipping .total-line__price span {
+    font-size: 0;
+  }
+
+  .total-line--shipping .total-line__price span:before {
+    content: 'See invoice';
+    display: inline;
+    font-size: 14px;
+  }
+
+  [data-shipping-methods] .radio__label__accessory {
+    display: none;
+  }
+
+  [data-step="payment_method"] [data-review-section="shipping-cost"] .emphasis {
+    display: none;
+  }
+</style>

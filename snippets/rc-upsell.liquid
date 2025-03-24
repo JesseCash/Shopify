@@ -1,0 +1,173 @@
+<div
+  class="rc-upsell product-meal-item extra-meal"
+  data-type="{{product.type}}"
+  data-tags="{{product.tags | join: ', '}}"
+>
+  <div class="meal-img-box">
+    <img loading="lazy" src="{{ product.featured_image.src | img_url: '800x' }}" class="object-cover">
+
+    <button class="meal-popup-action">
+      <svg
+        class="pointer-events-none"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle class="pointer-events-none" cx="12" cy="12" r="12" fill="black"></circle>
+        <path class="pointer-events-none" d="M10.5894 7.632C10.5894 8.4 11.2294 9.024 11.9974 9.024C12.7654 9.024 13.4054 8.4 13.4054 7.632C13.4054 6.864 12.7654 6.24 11.9974 6.24C11.2294 6.24 10.5894 6.864 10.5894 7.632ZM10.7814 18H13.2134V10.128H10.7814V18Z" fill="white"></path>
+      </svg>
+    </button>
+
+    {% render 'meal-type-group' with product: product %}
+  </div>
+
+  <div class="meal-info-box">
+    <div class="info-head">
+      <span class="meal-title">{{ product.title }}</span>
+      <span class="meal-price">
+        {{ product.price | money_without_trailing_zeros }}
+      </span>
+    </div>
+
+    <div class="meal-add-cart">
+      <button class="button bordered-btn white-btn rc-upsell-add js-rc-upsell-add active"
+      data-product-id="{{ product.id }}"
+      data-variant-id="{{product.selected_or_first_available_variant.id}}">Add to Next Box</button>
+
+      <div class="qty-selection-wrap rc-upsell-qty" data-variant-id="{{product.selected_or_first_available_variant.id}}">
+        <button class="qty-ctrl-btn rc-upsell-qty__minus qty-minus">
+          <svg
+            class="pointer-events-none"
+            width="17"
+            height="4"
+            viewBox="0 0 17 4"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 2H16.5" stroke="black" stroke-width="2.5"></path>
+          </svg>
+        </button>
+
+        <span class="bold"
+          ><span class="value">
+            1
+          </span>
+        </span>
+
+        <button class="qty-ctrl-btn rc-upsell-qty__plus qty-plus">
+          <svg
+            class="pointer-events-none"
+            width="17"
+            height="17"
+            viewBox="0 0 17 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 8.25H16.5" stroke="black" stroke-width="2.5"></path>
+            <path d="M8.25 0L8.25 16.5" stroke="black" stroke-width="2.5"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="meal-popup-box">
+    <div class="meal-popup-box-inner page-container">
+      <button class="close-popup">
+        <svg width="40" height="44" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect y="0.176453" width="40" height="42.9412" rx="20" fill="#F2F2F2"></rect>
+          <path d="M14.166 15.764L25.8333 28.2892" stroke="black" stroke-width="2.5"></path>
+          <path d="M25.834 15.764L14.1667 28.2892" stroke="black" stroke-width="2.5"></path>
+        </svg>
+      </button>
+
+      <div class="popup-image desktop-block hidden">
+        <img src="{{ product.featured_image.src | img_url: '800x' }}" class="object-cover">
+      </div>
+
+      <div class="popup-info">
+        <h4 class="meal-title bold">{{ product.title }}</h4>
+
+        {% render 'meal-type-group' with product: product %}
+
+        {% comment %}
+          Must be integrated with metafield again.
+          =========================================
+          Start static elements
+        {% endcomment %}
+
+        {% if product.description != blank %}
+          <p class="description">
+            {{ product.description }}
+          </p>
+        {% endif %}
+
+        <div class="meal-property-accordion-list accordions">
+          <div class="property-item accordion-item">
+            <div class="accordion-heading active">
+              <h5 class="item-question">Ingredients</h5>
+              {% render 'svg-icon-arrow-down' %}
+            </div>
+
+            <div class="accordion-content" style="display: block;">
+              {{ product.metafields.custom.ingredients | metafield_tag }}
+            </div>
+          </div>
+
+          <div class="property-item accordion-item">
+            <div class="accordion-heading">
+              <h5 class="item-question">Allergens</h5>
+              {% render 'svg-icon-arrow-down' %}
+            </div>
+
+            <div class="accordion-content">
+              <p>{{ product.metafields.custom.allergens | metafield_tag }}</p>
+
+              {% comment %}
+                This is a static content for all meals. Not from metafield. Do not remove when integration
+              {% endcomment %}
+              <div class="allergens-snippet">
+                <h6 class="subtitle bold">Allergens Statement</h6>
+                <p class="desc">
+                  Menu items may contain or come into contact with common allergens including wheat, eggs, nuts, soya,
+                  sulphites and shellfish.
+                </p>
+              </div>
+              {% comment %}
+                This is a static content for all meals. Not from metafield. Do not remove when integration
+              {% endcomment %}
+            </div>
+          </div>
+
+          <div class="property-item accordion-item">
+            <div class="accordion-heading">
+              <h5 class="item-question">Nutritional Info</h5>
+              {% render 'svg-icon-arrow-down' %}
+            </div>
+
+            <div class="accordion-content">
+              {{ product.metafields.custom.nutritional_info | metafield_tag }}
+            </div>
+          </div>
+
+          <div class="property-item accordion-item">
+            <div class="accordion-heading">
+              <h5 class="item-question">Cooking Instructions</h5>
+              {% render 'svg-icon-arrow-down' %}
+            </div>
+
+            <div class="accordion-content">
+              <p>{{ product.metafields.custom.cooking_instructions | metafield_tag }}</p>
+            </div>
+          </div>
+        </div>
+
+        {% comment %}
+          End static elements
+        {% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>
