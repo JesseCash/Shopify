@@ -1,0 +1,79 @@
+<div class="faqs-wrapper page-spacing page-y-spacing">
+  <div class="faqs-container">
+    <div class="faqs-intro">
+      <p class="faqs-title">FAQs</p>
+      <h3 class="faqs-heading">{{ section.settings.header }}</h3>
+      <p class="faqs-description">{{ section.settings.text }}</p>
+      {%
+        render 'button'
+        with
+        white: true,
+        text: "Read All FAQs",
+        link: "/pages/faqs",
+      %}
+    </div>
+
+    <div class="faqs-list accordions">
+      {% for block in section.blocks %}
+        <div class="faq-item accordion-item">
+          <div class="accordion-heading {% if forloop.first %}active{%endif%}">
+            <h4 class="item-question">{{ block.settings.question }}</h4>
+            <span class="accordion-nav"></span>
+          </div>
+
+          <div
+            class="accordion-content"
+            {% if forloop.first %}
+              style="display: block;"
+            {% endif %}
+          >
+            {{ block.settings.answer }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQs",
+  "tag": "section",
+  "class": "faqs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "header",
+      "label": "Header"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Q&A",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQs"
+    }
+  ]
+}
+{% endschema %}

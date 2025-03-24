@@ -1,0 +1,73 @@
+<!-- Item schema -->
+<meta itemprop="name" content="{{ product.title }}">
+<meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+<meta itemprop="image" content="{{ product.featured_image.src | img_url: '800x' }}">
+
+<div class="page-container">
+  <div class="product-plan product-taster-plan quantity-select-plan">
+    <div class="plan-information">
+      <h3 class="plan-title">{{ section.settings.title }}</h3>
+      <p class="plan-description">{{ section.settings.desc }}</p>
+
+      <div class="snippet-link-wrap">
+        <a href="/products/fuel-box" class="snippet-link">
+          <div class="snippet-image">
+            <img src="{{ section.settings.snippet_image | img_url: 'master' }}">
+          </div>
+
+          <div class="snippet-description">
+            <h6 class="desc-title">Want weekly Fuel boxes?</h6>
+            <p class="desc-text"><span class="underline">Subscribe</span> for free delivery and more meals</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="plan-selection qty-selection">
+      {% assign checkoutMealsQty = 0 %}
+      {% assign checkoutExtraMealsQty = 0 %}
+
+      {% if cart.item_count > 0 %}
+        {% for item in cart.items %}
+          {% if item.product.title contains 'Taster' %}
+            {% assign checkoutMealsQty = 4 %}
+            {% assign checkoutExtraMealsQty = cart.item_count | minus: checkoutMealsQty %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      <input type="hidden" id="taster-meals-qty" class="total-meals-limit" value="4">
+      <input
+        type="hidden"
+        class="current-meals-qty"
+        value="{%if checkoutMealsQty > 0%}{{checkoutMealsQty}}{%else%}0{%endif%}"
+      >
+      <input type="hidden" class="extra-meals-qty" value="{{checkoutExtraMealsQty}}">
+      <input type="hidden" class="total-meals-price" value="{{ product.variants[0].price | divided_by: 100.0 | json }}">
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Quantity",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "snippet_image",
+      "label": "Snippet Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Plan Title"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Plan Description"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,35 @@
+<div class="image-banner">
+  <img class="image-banner__img image-banner__img--desktop" src="{{ section.settings.image | img_url: 'master' }}">
+  <img class="image-banner__img image-banner__img--mobile" src="{{ section.settings.image_mobile | img_url: 'master' }}">
+  <span class="image-banner__text">{{ section.settings.title }}</span>
+</div>
+
+{% schema %}
+{
+  "name": "Image Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image - Mobile"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Banner"
+    }
+  ]
+}
+{% endschema %}

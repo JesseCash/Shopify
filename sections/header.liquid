@@ -1,0 +1,139 @@
+<header class="header-wrapper page-spacing">
+  <div class="header-inner">
+    <div class="logo-wrapper">
+      <a href="/" class="site-logo">
+        {% comment %}
+        {% render 'svg-header-logo' %}
+        {% endcomment %}
+        <img src="https://cdn.shopify.com/s/files/1/0744/4175/2863/t/7/assets/Fuel-Hub-Pro-Logo-black-no-bg.svg?v=1710242830" />
+        {% render 'svg-favicon' with { classes: "small-hidden"} %}
+      </a>
+    </div>
+
+    <div class="header-links-wrapper">
+      {%- if section.settings.menu != blank -%}
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}" class="navigation-link desktop-block hidden">
+            {{ link.title }}
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+
+      <div class="customer-functional-link">
+        {% if customer %}
+          {% unless template contains 'account' %}
+            {%
+              render 'button'
+              with
+              primary: true,
+              medium: true,
+              text: "My Account",
+              link: "/account"
+            %}
+          {% else %}
+            {%
+              render 'button'
+              with
+              primary: true,
+              medium: true,
+              text: "Order Now",
+              link: "/products/fuel-box"
+            %}
+          {% endunless %}
+        {% else %}
+          {%
+            render 'button'
+            with
+            primary: true,
+            medium: true,
+            text: "Menu",
+            link: "/pages/menu"
+          %}
+        {% endif %}
+      </div>
+
+      <a href="/account" class="account-icon">
+        {% render 'svg-account-icon' %}
+      </a>
+
+      <div class="desktop-hidden mobile-burger">
+        {%
+          render 'svg-icon-hamburger'
+          with
+          classes: "icon-hamburger"
+        %}
+        {%
+          render 'svg-icon-close'
+          with
+          classes: "icon-close hidden"
+        %}
+      </div>
+    </div>
+  </div>
+
+  <div class="header-mobile-dropdown page-spacing">
+    {% if customer %}
+      <div class="customer-mobile-account">
+        {%
+          render 'button'
+          with
+          borderedDark: true,
+          text: "My Account",
+          link: "/account/"
+        %}
+      </div>
+    {% else %}
+      <div class="customer-mobile-sign">
+        {%
+          render 'button'
+          with
+          borderedDark: true,
+          text: "Log in",
+          link: "/account/login"
+        %}
+        {%
+          render 'button'
+          with
+          borderedDark: true,
+          text: "Create Account",
+          link: "/account/register"
+        %}
+      </div>
+    {% endif %}
+
+    <div class="mobile-functional-link">
+      {%
+        render 'button'
+        with
+        primary: true,
+        text: "Order Now",
+        link: "/products/fuel-box",
+      %}
+    </div>
+
+    <div class="mobile-nav">
+      {%- if section.settings.menu != blank -%}
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}" class="navigation-link">
+            {{ link.title }}
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,73 @@
+<div class="image-textbox-wrapper page-spacing">
+  <div
+    {% if section.settings.id_value %}
+      id="{{section.settings.id_value}}"
+    {% endif %}
+    class="image-textbox-container {% if section.settings.invert_pos == true %}invert-position{%endif%}"
+    {% if section.settings.id_value %}
+      data-anchor="true"
+    {% endif %}
+  >
+    <div class="image-wrap">
+      <img src="{{ section.settings.image | img_url: '1024x1024' }}">
+    </div>
+
+    <div class="textbox-wrap">
+      {% if section.settings.subtitle %}
+        <p class="subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+      <h2 class="title">{{ section.settings.title }}</h2>
+      <div class="description">{{ section.settings.description | newline_to_br }}</div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image Textbox",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "id_value",
+      "label": "ID Value"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "TextBox"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sub Title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "invert_pos",
+      "label": "Invert Position",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Textbox"
+    }
+  ]
+}
+{% endschema %}

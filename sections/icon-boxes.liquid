@@ -1,0 +1,57 @@
+<div class="icon-boxes-container page-spacing">
+  <h3 class="container-heading">{{ section.settings.heading }}</h3>
+  <div class="icon-grid">
+    {% for block in section.blocks %}
+      <div class="icon-box">
+        <img src="{{ block.settings.icon | img_url: 'master' }}" class="icon-image">
+        <div class="icon-text">
+          <h4 class="icon-subheading">{{ block.settings.subheading }}</h4>
+          <p class="icon-description">{{ block.settings.text }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon Boxes",
+  "tag": "section",
+  "class": "icon-boxes",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon Boxes"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,85 @@
+{% assign all_meals_collection = collections['all-meals'] %}
+{% assign extra_meals_collection = collections['all-extras'] %}
+{% assign checkoutMealsQty = 0 %}
+
+{% if cart.item_count > 0 %}
+  {% for item in cart.items %}
+    {% if item.product.title contains 'Taster' %}
+      {% assign checkoutMealsQty = 4 %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<div class="page-container">
+  <div class="product-meals meals-selection taster-meals-selection {%unless checkoutMealsQty > 0%}pointer-events-none{%endunless%}">
+    <div class="meals-selection-wrap">
+      <div class="main-meal-selection">
+        <h3 class="title bold">{{ section.settings.title }}</h3>
+        <p class="description">{{ section.settings.desc }}</p>
+
+        {% render 'meal-filter' with collection: all_meals_collection %}
+
+        <div class="meals-grid-wrap">
+          {% paginate all_meals_collection.products by 100 %}
+            {% for product in all_meals_collection.products limit: 100 %}
+              {% render 'product-meal' with product: product, taster: true, extra: false %}
+            {% endfor %}
+          {% endpaginate %}
+        </div>
+      </div>
+    </div>
+
+    <div class="order-summary taster-summary">
+      {% render 'order-summary', taster: true %}
+    </div>
+
+    <button class="desktop-hidden mobile-summary-nav">
+      <div class="summary-head">
+        <h6 class="bold">{% render 'svg-icon-arrow-up' %} Order Summary</h6>
+
+        <span class="qty-calc bold">
+          <span class="current-qty">{{ checkoutMealsQty }}</span>
+          <span class="divider">/</span>
+          <span class="limit-qty">4</span>
+        </span>
+      </div>
+    </button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Meal Selection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main Meal Selection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Extra Meal Selection"
+    },
+    {
+      "type": "text",
+      "id": "extra_title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "extra_desc",
+      "label": "Description"
+    }
+  ]
+}
+{% endschema %}

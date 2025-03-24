@@ -1,0 +1,79 @@
+<div class="social-banner-wrapper page-spacing page-y-spacing">
+  <div class="social-information">
+    <div class="social-heading">
+      <a href="{{ settings.social_instagram_link }}" target="_blank">
+        {% render 'svg-icon-instagram-alt' %}
+      </a>
+      <h3 class="social-banner_title">{{ section.settings.heading }}</h3>
+    </div>
+    <p class="social-tags">{{ section.settings.social_info }}</p>
+    <p class="social-words">{{ section.settings.sub_heading }}</p>
+  </div>
+
+  <covet-pics-widget gallery-embed-id="234573"></covet-pics-widget>
+  <script src="https://shopify.covet.pics/covet-pics-widget-inject.js"></script>
+
+  {% comment %}
+  <div class="social-list">
+    {% for block in section.blocks %} 
+      <div class="social-card">
+        {% if block.settings.link %}
+        <a href="{{ block.settings.link }}" target="_blank">
+        {% endif %}
+          <img src="{{ block.settings.image | img_url: 'master' }}" class="social-card_image">
+        {% if block.settings.link %}
+        </a>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  {% endcomment %}
+</div>
+
+{% schema %}
+{
+  "name": "Social Banner",
+  "tag": "section",
+  "class": "social-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "social_info",
+      "label": "Social Info"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social Banner"
+    }
+  ]
+}
+{% endschema %}

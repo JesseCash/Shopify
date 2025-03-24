@@ -1,0 +1,78 @@
+{% assign show = false %}
+
+{% if customer %}
+  {% unless customer.tags contains 'Business' %}
+    {% assign show = true %}
+  {% endunless %}
+{% else %}
+  {% assign show = true %}
+{% endif %}
+
+{% if show %}
+  <div class="taster-box-banner_container page-spacing page-y-spacing">
+    <div class="taster-banner_inner">
+      <div class="hidden desktop-block taster-banner-image">
+        <img src="{{ section.settings.banner_image | img_url: 'master' }}" class="object-contain">
+      </div>
+      <div class="desktop-hidden taster-banner-image_mobile">
+        <img src="{{ section.settings.banner_image_mobile | img_url: 'master' }}" class="object-contain">
+      </div>
+
+      <div class="teaster-banner-content">
+        <h4 class="banner-title">{{ section.settings.heading }}</h4>
+        <p class="banner-description">{{ section.settings.text }}</p>
+        {%
+          render 'button'
+          with
+          bordered: true,
+          medium: true,
+          text: "Order a Taster Box",
+          link: "/products/taster-box"
+        %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Taster Box Banner",
+  "tag": "section",
+  "class": "taster-box-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image_mobile",
+      "label": "Banner Image Mobile"
+    },
+    {
+      "type": "header",
+      "content": "Banner Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Taster Box Banner"
+    }
+  ]
+}
+{% endschema %}

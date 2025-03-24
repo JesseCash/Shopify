@@ -1,0 +1,82 @@
+<footer class="footer-wrapper page-spacing">
+  <div class="footer-main-area">
+    <div class="footer-logo-part">
+      {% comment %}
+      {% render 'svg-footer-logo' %}
+      {% endcomment %}
+      <img class="logo_img" src="https://cdn.shopify.com/s/files/1/0744/4175/2863/t/7/assets/Fuel-Hub-Pro-Logo-white-no-bg.svg?v=1710242841" />
+      {% render 'social-icons' %}
+    </div>
+
+    <div class="main-menu-part fuelhub-menu">
+      <p class="menu-title">FUEL HUB</p>
+      <div class="menu-wrapper">
+        {% if linklists[section.settings.footer_linklist].links.size > 0 %}
+          {% for link in linklists[section.settings.footer_linklist].links %}
+            <a
+              href="{% if link.title contains 'Account' %}/account{%else %}{{ link.url }}{% endif %}"
+              class="menu-item"
+            >
+              {{- link.title -}}
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="main-menu-part learn-more-menu">
+      <p class="menu-title">LEARN MORE</p>
+      <div class="menu-wrapper">
+        {% if linklists[section.settings.footer_linklist_two].links.size > 0 %}
+          {% for link in linklists[section.settings.footer_linklist_two].links %}
+            <a href="{{ link.url }}" class="menu-item">{{ link.title }}</a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-copyright-area">
+    <p class="copyright">{{ section.settings.footer_copyright }}</p>
+
+    <div class="footer-policy-menu">
+      {% if linklists[section.settings.footer_linklist_three].links.size > 0 %}
+        {% for link in linklists[section.settings.footer_linklist_three].links %}
+          <a href="{{ link.url }}" class="policy-menu-item">{{ link.title }}</a>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "footer_copyright",
+      "default": "Fuel Hub © All Rights Reserved",
+      "label": "Copyright"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_linklist",
+      "label": "Primary menu",
+      "default": "footer"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_linklist_two",
+      "label": "Secondary menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_linklist_three",
+      "label": "Additional menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,95 @@
+<div class="highlight-container page-spacing page-y-spacing">
+  <div class="highlight-container_inner slider-container_inner">
+    <p class="highlight-title slider-title">Menu Highlights</p>
+    <h2 class="highlight-heading slider-heading">{{ section.settings.heading }}</h2>
+
+    <div class="highlight-swiper-wrapper">
+      {%- assign collection = collections[section.settings.collection] -%}
+
+       
+<!-- get current and next month meals-->
+
+{% assign use_monthly_menu = true %}
+{% assign current_month = "now" | date: "%-m" %}
+{% assign current_day = "now" | date: "%-d" %}
+
+{% assign current_month = current_month | plus: 0 %}
+{% assign current_day = current_day | plus: 0 %}
+{% if current_day >= 23 %}
+  {% assign current_month = current_month | plus: 1 %}
+  
+{% endif %}
+
+{% assign monthly_menu_handler = "meals-january,meals-february,meals-march,meals-april,meals-may,meals-june,meals-july,meals-august,meals-september,meals-october,meals-november,meals-december" | split: "," %}
+
+{% assign current_month_idx = current_month | minus: 1 %}
+{% assign meals_collection = collections[monthly_menu_handler[current_month_idx]] %}
+
+      <!-- current_month_idx {{ current_month_idx }}-->
+
+      {% for i in (1..8) %}
+        {% assign product = meals_collection.products[i] %}
+        <div class="highlight-item slick-slide">
+          <img src="{{ product.featured_image | img_url: '460x460' }}" class="highlight-product-image">
+          <h4 class="highlight-product-title">{{ product.title }}</h4>
+        </div>
+      {% endfor %}
+    </div>
+
+    {%- if customer- %}
+      {% if customer.tags contains 'Business' %}
+        {%
+          render 'button'
+          with
+          primary: true,
+          medium: true,
+          text: "B2B Account",
+          link: "/account"
+        %}
+      {% else %}
+        {%
+          render 'button'
+          with
+          primary: true,
+          medium: true,
+          text: "My Account",
+          link: "/account"
+        %}
+      {%- endif -%}
+    {%- else -%}
+      {%
+        render 'button'
+        with
+        primary: true,
+        medium: true,
+        text: "Order Now",
+        link: "/products/fuel-box"
+      %}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Menu Highlight",
+  "tag": "section",
+  "class": "menu-highlight",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Menu Highlight"
+    }
+  ]
+}
+{% endschema %}

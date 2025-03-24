@@ -1,0 +1,187 @@
+{% assign all_meals_collection = collections['all-meals'] %}
+{% assign breakfasts_collection = collections['breakfasts'] %}
+{% assign snacks_collection = collections['snacks'] %}
+{% assign desserts_collection = collections['desserts'] %}
+{% assign merch_collection = collections['merch'] %}
+{% assign checkoutMealsQty = 0 %}
+
+{% comment %}
+<!-- get current and next month meals-->
+{% endcomment %}
+{% assign current_month = "now" | date: "%-m" %}
+{% assign next_month = current_month | plus: 1 %}
+{% if next_month > 12 %}
+  {% assign next_month = 1 %}
+{% endif %}
+{% assign current_month = current_month | plus: 0 %}
+
+{% assign monthly_menu_handler = "meals-january,meals-february,meals-march,meals-april,meals-may,meals-june,meals-july,meals-august,meals-september,meals-october,meals-november,meals-december" | split: "," %}
+
+{% assign current_month_idx = current_month | minus: 1 %}
+{% assign next_month_idx = next_month | minus: 1 %}
+
+{% assign current_month_meals_collection = collections[monthly_menu_handler[current_month_idx]] %}
+{% assign next_month_meals_collection = collections[monthly_menu_handler[next_month_idx]] %}
+
+
+{% comment %}
+<!-- get weekly meals-->
+{% endcomment %}
+{%- liquid
+   
+  assign use_weekly_menu = true
+  include 'weekly-menu-available-date-sorted'
+  
+-%}
+
+
+
+
+
+{% if cart.item_count > 0 %}
+  {% for item in cart.items %}
+    {% if item.product.tags contains 'meal' %}
+      {% assign checkoutMealsQty = checkoutMealsQty | plus: item.quantity %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<div class="page-container">
+  <div class="product-meals meals-selection fuel-meals-selection {%unless checkoutMealsQty > 0%}pointer-events-none{%endunless%}">
+    <div class="meals-selection-wrap">
+      <div class="main-meal-selection" >
+        <h3 class="title bold">{{ section.settings.title }}</h3>
+        {% comment %}
+        <p class="description">{{ section.settings.desc }}</p>
+        {% endcomment %}
+
+        {% include 'weekly-menu-tabs' %}
+
+        {% render 'meal-filter' with use_weekly_menu: true %}
+
+
+        {%- for start_date in weekly-meals-available-date-sorted limit:4 -%}
+            {%- assign weekly-menu-idx = forloop.index -%}
+            {%- for i in (1..5) -%}
+              {%- assign collection_key = "weekly-meals-" | append: i -%}
+              {%- assign collection = collections[collection_key] -%}
+              {%- if start_date == collection.metafields.custom.menu_available_date.value -%}
+                <div class="meals-grid-wrap"  {% if weekly-menu-idx!=1 %}style="display:none"{% endif %} data-chefhandle="{{ collections[chef_collection_key].handle }}" data-handle="{{ collections[collection_key].handle }}" data-startdate="{{- start_date -}}" id="weekly-meals-selection-{{- weekly-menu-idx -}}">
+                {% paginate collection.products by 100 %}
+                  {% for product in collection.products limit: 100 %}
+                    {% render 'product-meal' with product: product, taster: false, extra: false %}
+                  {% endfor %}
+                {% endpaginate %}
+              </div>
+              {%- endif -%} 
+            {%- endfor -%}
+          {%- endfor -%}
+          <div id="no-meal-ready-for-choose" style="display:none">Unable to view menu yet. It will be ready soon.</div>
+      </div>
+      
+
+      <div class="extra-meal-selection">
+        <div class="extra-meal-selection-inner">
+          <button class="close-popup close-popup--extra">
+            <svg width="40" height="44" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect y="0.176453" width="40" height="42.9412" rx="20" fill="#F2F2F2"></rect>
+              <path d="M14.166 15.764L25.8333 28.2892" stroke="black" stroke-width="2.5"></path>
+              <path d="M25.834 15.764L14.1667 28.2892" stroke="black" stroke-width="2.5"></path>
+            </svg>
+          </button>
+
+          <h4 class="bold">{{ section.settings.extra_title }}</h4>
+          <p class="description">
+            {%comment%}{{ section.settings.extra_desc }}{%endcomment%}</p>
+          
+
+          <div class="meals-grid-wrap grid-4-col">
+            <div class="meals-grid__heading">Breakfasts</div>
+            {% paginate breakfasts_collection.products by 100 %}
+              {% for product in breakfasts_collection.products limit: 100 %}
+                {% render 'product-meal' with product: product, taster: false, extra: true, addbutton: true %}
+              {% endfor %}
+            {% endpaginate %}
+
+            <div class="meals-grid__heading">Snacks</div>
+            {% paginate snacks_collection.products by 100 %}
+              {% for product in snacks_collection.products limit: 100 %}
+                {% render 'product-meal' with product: product, taster: false, extra: true, addbutton: true %}
+              {% endfor %}
+            {% endpaginate %}
+            
+            <div class="meals-grid__heading">Desserts</div>
+            {% paginate desserts_collection.products by 100 %}
+              {% for product in desserts_collection.products limit: 100 %}
+                {% render 'product-meal' with product: product, taster: false, extra: true, addbutton: true %}
+              {% endfor %}
+            {% endpaginate %}
+            
+            <div class="meals-grid__heading">Merch</div>
+            {% paginate merch_collection.products by 100 %}
+              {% for product in merch_collection.products limit: 100 %}
+                {% render 'product-meal' with product: product, taster: false, extra: true, addbutton: true %}
+              {% endfor %}
+            {% endpaginate %}
+
+            <div class="extra-checkout-btn">
+              <button class="js-checkout-btn button secondary-btn">Continue to Checkout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-summary fuel-summary">
+      {% render 'order-summary', taster: false %}
+    </div>
+
+    <button class="desktop-hidden mobile-summary-nav">
+      <div class="summary-head">
+        <h6 class="bold">{% render 'svg-icon-arrow-up' %} Order Summary</h6>
+
+        <span class="qty-calc bold">
+          <span class="current-qty">{{ checkoutMealsQty }}</span>
+          <span class="divider">/</span>
+          <span class="limit-qty">{{ checkoutMealsQty }}</span>
+        </span>
+      </div>
+    </button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Meal Selection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main Meal Selection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Extra Meal Selection"
+    },
+    {
+      "type": "text",
+      "id": "extra_title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "extra_desc",
+      "label": "Description"
+    }
+  ]
+}
+{% endschema %}

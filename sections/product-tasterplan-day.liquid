@@ -1,0 +1,130 @@
+{% assign checkoutDay = '' %}
+
+{% if cart.item_count > 0 %}
+  {% for item in cart.items %}
+    {% if item.product.title contains 'Taster' %}
+      {% if item.product.title contains 'Wed' %}
+        {% assign checkoutDay = 'Wed' %}
+      {% elsif item.product.title contains 'Sat' %}
+        {% assign checkoutDay = 'Sat' %}
+      {% elsif item.product.title contains 'Sun' %}
+        {% assign checkoutDay = 'Sun' %}
+      {% endif %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<div class="page-container">
+  <div class="product-plan product-taster-plan day-select-plan">
+    <div class="plan-information">
+      <h3 class="plan-title">{{ section.settings.title }}</h3>
+      <p class="plan-description">{{ section.settings.desc }}</p>
+    </div>
+
+    <div class="plan-selection day-selection">
+      <input type="hidden" id="meal-plan-day" value="{{checkoutDay}}">
+
+      <div class="day-selectbox-wrap">
+        {% comment %}
+          Day select option muse be updated with backend integration.
+          This is a static selection.
+          =================================
+          Start selection
+        {% endcomment %}
+        {%- liquid
+          assign current_hour = 'now' | date: '%H'
+          assign oneday_seconds = 24 | times: 3600
+          assign fiveday_seconds = oneday_seconds | times: 5
+          assign cutoff_day = 'now' | date: '%s' | plus: fiveday_seconds
+          if current_hour >= 23
+            assign cutoff_day = cutoff_day | plus: oneday_seconds
+          endif
+        -%}
+        {%- for i in (0..6) -%}
+          {%- assign what_day = cutoff_day | date: '%a' %}
+          {%- if what_day == 'Wed' or what_day == 'Sat' or what_day == 'Sun' %}
+            <button
+              class="plan-day-item {%if checkoutDay == what_day%}active{%endif%}"
+              data-day="{{ what_day }}"
+              data-date="{{ cutoff_day | date: '%d-%m-%Y' }}"
+            >
+              <span class="day">{{ what_day }}</span>
+              <span class="date">{{ cutoff_day | date: '%d %b' }}</span>
+              <span class="checked-mark">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2"
+                >
+                  <rect width="24" height="24" rx="12" fill="#74F44F"></rect>
+                  <path d="M6.6001 12L10.2001 15.6L17.4001 8.4" stroke="black" stroke-width="2.5"></path>
+                </svg>
+              </span>
+            </button>
+          {%- endif -%}
+          {%- assign cutoff_day = cutoff_day | plus: oneday_seconds -%}
+        {%- endfor -%}
+        {% comment %}
+          End selection
+        {% endcomment %}
+      </div>
+
+      {% comment %}
+      <div class="day-select-desc">
+        <span class="desc-inner">
+          <span class="bold">Free pre-midday delivery</span> Wednesday - Saturday.
+          <br>
+          Sunday pre-midday delivery is £4.95.
+        </span>
+      </div>
+      {% endcomment %}
+    </div>
+  </div>
+</div>
+
+{%- render 'js-fuelbox-products',
+  mod_wed: all_products[section.settings.wednesday],
+  mod_sat: all_products[section.settings.saturday],
+  mod_sun: all_products[section.settings.sunday]
+-%}
+
+{% schema %}
+{
+  "name": "Product Plan",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Plan Title"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Plan Description"
+    },
+    {
+      "type": "header",
+      "content": "Plan Product"
+    },
+    {
+      "type": "product",
+      "id": "wednesday",
+      "label": "Wednesday"
+    },
+    {
+      "type": "product",
+      "id": "saturday",
+      "label": "Saturday"
+    },
+    {
+      "type": "product",
+      "id": "sunday",
+      "label": "Sunday"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,144 @@
+<div class="contact-page-wrapper page-spacing page-y-spacing">
+  <div class="contact-information">
+    <div class="info-header">
+      <h2 class="info-heading">{{ section.settings.heading }}</h2>
+      <p class="info-description">{{ section.settings.body_text }}</p>
+    </div>
+
+    {% if settings.contact_number != blank %}
+    <div class="contact-info">
+      <h4 class="info-title">Call us</h4>
+      <p class="info-value">{{ settings.contact_number | json_encode }}</p>
+    </div>
+    {% endif %}
+
+    <div class="contact-info">
+      <h4 class="info-title">Email us</h4>
+      <p class="info-value">{{ settings.contact_email | json_encode }}</p>
+    </div>
+
+    <div class="contact-info">
+      <h4 class="info-title">Our address</h4>
+      <p class="info-value">{{ settings.address_line_1 | json_encode }}</p>
+      <p class="info-value">{{ settings.address_line_2 | json_encode }}</p>
+      <p class="info-value">{{ settings.address_city | json_encode }}</p>
+      <p class="info-value">{{ settings.address_county | json_encode }}</p>
+      <p class="info-value">{{ settings.address_postcode | json_encode }}</p>
+    </div>
+  </div>
+
+  <div class="contact-form">
+    <h2 class="form-title">{{ section.settings.form_title }}</h2>
+
+    <div class="contact-form-inner">
+      {%- form 'contact', id: 'ContactForm', class: 'isolate' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form__message">
+            {{ 'templates.contact.form.post_success' | t }}
+          </p>
+        {%- elsif form.errors -%}
+          <p class="form__message">
+            {{ 'templates.contact.form.error_heading' | t }}
+          </p>
+
+          <ul class="form-status-list" role="list">
+            <li>
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}
+            </li>
+          </ul>
+        {%- endif -%}
+
+        <div class="form-group">
+          <label class="field__label" for="ContactForm-name">Full Name*</label>
+          <input
+            class="field__input"
+            autocomplete="name"
+            type="text"
+            id="ContactForm-name"
+            name="contact[{{ 'templates.contact.form.name' | t }}]"
+            value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+            placeholder="Full name"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="field__label" for="ContactForm-email">Email address*</label>
+          <input
+            autocomplete="email"
+            type="email"
+            id="ContactForm-email"
+            class="field__input"
+            name="contact[email]"
+            spellcheck="false"
+            autocapitalize="off"
+            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+            aria-required="true"
+            {% if form.errors contains 'email' %}
+              aria-invalid="true"
+              aria-describedby="ContactForm-email-error"
+            {% endif %}
+            placeholder="Email address"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form__label field__label" for="ContactForm-body"> Message </label>
+          <textarea
+            rows="10"
+            id="ContactForm-body"
+            class="text-area field__input"
+            name="contact[{{ 'templates.contact.form.comment' | t }}]"
+            placeholder="Please add your message here..."
+          >
+            {{- form.body -}}
+          </textarea>
+        </div>
+
+        <div class="form-submit">
+          <p class="submit-description">*These fields are required</p>
+          {%
+            render 'button'
+            with
+            primary: true,
+            buttonType: "submit",
+            text: "Send",
+          %}
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name"
+    }
+  ]
+}
+{% endschema %}

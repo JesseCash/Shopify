@@ -1,0 +1,38 @@
+<div class="page-container">
+  <div class="product-plan product-fuel-plan quantity-select-plan">
+
+    <div class="plan-selection qty-selection">
+      {% assign checkoutMealsQty = 0 %}
+      {% assign checkoutExtraMealsQty = 0 %}
+      {% assign checkoutMealsPrice = 0 %}
+
+      {% if cart.item_count > 0 %}
+        {% for item in cart.items %}
+          {% if item.product.tags contains 'meal' %}
+            {% assign checkoutMealsQty = checkoutMealsQty | plus: item.quantity %}
+          {% elsif item.product.tags contains 'extra' %}
+            {% assign checkoutExtraMealsQty = checkoutExtraMealsQty | plus: item.quantity %}
+          {% endif %}
+        {% endfor %}
+        {% assign checkoutMealsPrice = cart.total_price %}
+      {% endif %}
+
+      <input type="hidden" id="fuel-meals-qty" class="total-meals-limit" value="{{checkoutMealsQty}}">
+      <input
+        type="hidden"
+        class="current-meals-qty"
+        value="{%if checkoutMealsQty > 0%}{{checkoutMealsQty}}{%else%}0{%endif%}"
+      >
+      <input type="hidden" class="extra-meals-qty" value="{{checkoutExtraMealsQty}}">
+      <input type="hidden" class="total-meals-price" value="{{checkoutMealsPrice}}">
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Quantity",
+  "settings": [
+  ]
+}
+{% endschema %}

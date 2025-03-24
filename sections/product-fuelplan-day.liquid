@@ -1,0 +1,173 @@
+{% assign checkoutDay = '' %}
+
+{% if cart.item_count > 0 %}
+  {% for item in cart.items %}
+    {% unless item.product.title contains 'Taster' %}
+      {% if item.product.title contains 'Fuel Box' %}
+        {% if item.product.title contains 'Tue' %}
+          {% assign checkoutDay = 'Tue' %}
+        {% elsif item.product.title contains 'Wed' %}
+          {% assign checkoutDay = 'Wed' %}
+        {% elsif item.product.title contains 'Thu' %}
+          {% assign checkoutDay = 'Thu' %}
+        {% elsif item.product.title contains 'Fri' %}
+          {% assign checkoutDay = 'Fri' %}
+        {% elsif item.product.title contains 'Sat' %}
+          {% assign checkoutDay = 'Sat' %}
+        {% elsif item.product.title contains 'Sun' %}
+          {% assign checkoutDay = 'Sun' %}
+        {% endif %}
+        {% break %}
+      {% endif %}
+    {% endunless %}
+  {% endfor %}
+{% endif %}
+
+<div class="page-container">
+  <div class="product-plan product-fuel-plan day-select-plan">
+    <div class="plan-information">
+      <h3 class="plan-title">{{ section.settings.title }}</h3>
+      {% comment %}
+      <p class="plan-description">{{ section.settings.desc }}</p>
+      {% endcomment %}
+    </div>
+
+    <div class="plan-selection day-selection">
+      {% assign date = '' %}
+      {% assign dateText = '' %}
+      {% for attribute in cart.attributes %}
+        {% if attribute.first == 'Delivery Date' %}
+          {% assign date = attribute.last %}
+        {% endif %}
+        {% if attribute.first == 'Delivery Date Text' %}
+          {% assign dateText = attribute.last %}
+        {% endif %}
+      {% endfor %}
+      
+      <input type="hidden" id="meal-plan-day" value="{{checkoutDay}}" data-date="{{date}}">
+
+      <input type="text" class="plan-day__picker" {% if dateText != blank %}value="{{ dateText }}"{%else%}value="Choose Delivery Day"{% endif %} readonly>
+
+      <div class="day-selectbox-wrap">
+        {% comment %}
+          Day select option muse be updated with backend integration.
+          This is a static selection.
+          =================================
+          Start selection
+        {% endcomment %}
+
+        {%- liquid
+          assign current_hour = 'now' | date: '%H'
+          assign oneday_seconds = 24 | times: 3600
+          assign fiveday_seconds = oneday_seconds | times: 5
+          assign cutoff_day = 'now' | date: '%s' | plus: fiveday_seconds
+          if current_hour >= 23
+            assign cutoff_day = cutoff_day | plus: oneday_seconds
+          endif
+        -%}
+        {%- for i in (0..6) -%}
+          {%- assign what_day = cutoff_day | date: '%a' %}
+          {%- if what_day == 'Tue' or what_day == 'Wed' or what_day == 'Thu' or what_day == 'Fri' or what_day == 'Sat' or what_day == 'Sun' %}
+            <button
+              class="plan-day-item {%if checkoutDay == what_day%}active{%endif%}"
+              data-day="{{ what_day }}"
+              data-date="{{ cutoff_day | date: '%d-%m-%Y' }}"
+            >
+              <span class="day">{{ what_day }}</span>
+              <span class="date">{{ cutoff_day | date: '%d %b' }}</span>
+              <span class="checked-mark">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2"
+                >
+                  <rect width="24" height="24" rx="12" fill="#74F44F"></rect>
+                  <path d="M6.6001 12L10.2001 15.6L17.4001 8.4" stroke="black" stroke-width="2.5"></path>
+                </svg>
+              </span>
+            </button>
+          {%- endif -%}
+          {%- assign cutoff_day = cutoff_day | plus: oneday_seconds -%}
+        {%- endfor -%}
+
+        {% comment %}
+          End selection
+        {% endcomment %}
+      </div>
+
+      <div class="day-select-desc">
+        <span class="desc-inner">
+          <span class="bold">Pre-midday delivery</span> Tuesday - Sunday.
+          <br>
+          Please note the order Cut Off is <b>11am 6 days prior</b> to your chosen delivery day.<br />
+          Delivery cost is £4.95 per box of 15 meals.<br>
+          If you do require a Monday delivery please email <a href="mailto:teams@fuelhub.co.uk">Teams@fuelhub.co.uk</a> or call <b>01925 632085</b> and we will do our best to accommodate this request
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- render 'js-fuelbox-products',
+  mod_tue: all_products[section.settings.tuesday],
+  mod_wed: all_products[section.settings.wednesday],
+  mod_thu: all_products[section.settings.thursday],
+  mod_fri: all_products[section.settings.friday],
+  mod_sat: all_products[section.settings.saturday],
+  mod_sun: all_products[section.settings.sunday]
+-%}
+
+{% schema %}
+{
+  "name": "Product Plan",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Plan Title"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Plan Description"
+    },
+    {
+      "type": "header",
+      "content": "Plan Product"
+    },
+    {
+      "type": "product",
+      "id": "tuesday",
+      "label": "Tuesday"
+    },
+    {
+      "type": "product",
+      "id": "wednesday",
+      "label": "Wednesday"
+    },
+    {
+      "type": "product",
+      "id": "Thursday",
+      "label": "thursday"
+    },
+    {
+      "type": "product",
+      "id": "friday",
+      "label": "Friday"
+    },
+    {
+      "type": "product",
+      "id": "saturday",
+      "label": "Saturday"
+    },
+    {
+      "type": "product",
+      "id": "sunday",
+      "label": "Sunday"
+    }
+  ]
+}
+{% endschema %}

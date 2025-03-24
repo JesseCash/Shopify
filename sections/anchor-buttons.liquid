@@ -1,0 +1,79 @@
+<div class="anchor-group-wrapper" style="background-color: {{ section.settings.bg_color }}">
+  {% for block in section.blocks %}
+    {% if section.settings.button_type == 'bordered' %}
+      {%
+        render 'button'
+        with
+        borderedDark: true,
+        small: true,
+        text: block.settings.anchor_label,
+        link: block.settings.anchor_id
+      %}
+    {% else %}
+      {%
+        render 'button'
+        with
+        primary: true,
+        small: true,
+        text: block.settings.anchor_label,
+        link: block.settings.anchor_id
+      %}
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Anchor Group",
+  "tag": "section",
+  "class": "anchor-group",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Button Type",
+      "info": "Select anchor button style",
+      "options": [
+        {
+          "value": "bordered",
+          "label": "Bordered"
+        },
+        {
+          "value": "primary",
+          "label": "Primary"
+        }
+      ],
+      "default": "bordered"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "anchor",
+      "name": "Anchor",
+      "settings": [
+        {
+          "type": "text",
+          "id": "anchor_id",
+          "label": "ID"
+        },
+        {
+          "type": "text",
+          "id": "anchor_label",
+          "label": "Label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anchor Group"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,35 @@
+<div class="slogan-text-wrapper page-spacing">
+  <div class="slogan-text-contain">
+    <div class="slogan-text-contain_inner">
+      <p class="quotation-symbol start">“</p>
+      <h2 class="slogan">{{ section.settings.slogan }}</h2>
+      <p class="author">{{ section.settings.author }}</p>
+      <p class="quotation-symbol end">”</p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Slogan Text",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "slogan",
+      "label": "slogan"
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": "Author"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slogan Text"
+    }
+  ]
+}
+{% endschema %}

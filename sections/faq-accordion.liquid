@@ -1,0 +1,76 @@
+<div class="faq-accordion-wrapper page-spacing">
+  <div
+    {% if section.settings.id_value %}
+      id="{{section.settings.id_value}}"
+    {% endif %}
+    class="faq-accordion-container"
+    {% if section.settings.id_value %}
+      data-anchor="true"
+    {% endif %}
+  >
+    <h3 class="title">{{ section.settings.header }}</h3>
+
+    <div class="faq-accordion-list accordions">
+      {% for block in section.blocks %}
+        <div class="faq-item accordion-item">
+          <div class="accordion-heading {% if forloop.first %}active{%endif%}">
+            <h5 class="item-question">{{ block.settings.question }}</h5>
+            <span class="accordion-nav"></span>
+          </div>
+
+          <div
+            class="accordion-content"
+            {% if forloop.first %}
+              style="display: block;"
+            {% endif %}
+          >
+            {{ block.settings.answer }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "tag": "section",
+  "class": "faq- A-ccordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "id_value",
+      "label": "ID Value"
+    },
+    {
+      "type": "text",
+      "id": "header",
+      "label": "Header"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Q&A",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,79 @@
+<div class="meal-plan-order-footer">
+  <input type="hidden" id="meal-plan-step" value="1">
+
+  <div class="page-container order-footer-inner">
+    <div class="order-steps">
+      <h3 class="bold uppercase">Choose your Fuel</h3>
+
+      <div class="step-wrap">
+
+        <div class="date-step step current-step" data-step="1">
+          <span class="current icon">
+            <svg
+              class="block"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="32" height="32" rx="16" fill="#74F44F"></rect>
+              <path d="M14.7592 22H17.3032V10.24L12.4072 12.016V14.32L14.7592 13.472V22Z" fill="black"></path>
+            </svg>
+          </span>
+
+          <span class="passed icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="31" height="31" rx="15.5" x="0.5" y="0.5" stroke="white"></rect>
+              <path d="M8.80078 16L13.6008 20.8L23.2008 11.2" stroke="#74F44F" stroke-width="2.5"></path>
+            </svg>
+          </span>
+
+          <span className="step-label">Delivery Date</span>
+        </div>
+
+        <div class="meals-step step before-step" data-step="2">
+          <span class="before icon">
+            <svg
+              class="block"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="0.5" y="0.5" width="31" height="31" rx="15.5" stroke="white"></rect>
+              <path d="M11.6158 21.968L11.6318 22H19.8718V19.776H16.2558L16.2398 19.744L17.6318 17.904C18.8318 16.304 19.4558 15.104 19.4558 13.808C19.4558 11.632 17.6798 10.24 15.3918 10.24C14.0958 10.24 13.1198 10.688 12.4478 11.168V13.552C13.3118 12.88 14.3198 12.512 15.1518 12.512C16.1758 12.512 16.8798 13.056 16.8798 14.032C16.8798 14.912 16.3038 15.76 15.1518 17.296L11.6158 21.968Z" fill="white"></path>
+            </svg>
+          </span>
+
+          <span class="current icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="16" fill="#74F44F"></rect>
+              <path d="M11.6158 21.968L11.6318 22H19.8718V19.776H16.2558L16.2398 19.744L17.6318 17.904C18.8318 16.304 19.4558 15.104 19.4558 13.808C19.4558 11.632 17.6798 10.24 15.3918 10.24C14.0958 10.24 13.1198 10.688 12.4478 11.168V13.552C13.3118 12.88 14.3198 12.512 15.1518 12.512C16.1758 12.512 16.8798 13.056 16.8798 14.032C16.8798 14.912 16.3038 15.76 15.1518 17.296L11.6158 21.968Z" fill="black"></path>
+            </svg>
+          </span>
+
+          <span class="passed icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="31" height="31" rx="15.5" x="0.5" y="0.5" stroke="white"></rect>
+              <path d="M8.80078 16L13.6008 20.8L23.2008 11.2" stroke="#74F44F" stroke-width="2.5"></path>
+            </svg>
+          </span>
+
+          <span className="step-label">Meals</span>
+        </div>
+      </div>
+    </div>
+
+    {% render 'order-plan-checkout' with isTaster: false %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Order Footer",
+  "class": "plan-order-footer-wrap",
+  "settings": []
+}
+{% endschema %}

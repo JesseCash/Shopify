@@ -1,0 +1,139 @@
+<div class="testimonial-container page-spacing page-y-spacing">
+  <div class="testimonial-container_inner slider-container_inner">
+    <p class="testimonial-title slider-title">Testimonial</p>
+    <h2 class="testimonial-heading slider-heading">{{ section.settings.heading }}</h2>
+
+    <div class="testimonial-swiper-wrapper testimonial-swiper-wrapper-virtual">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <div class="testimonial-item-virtual slick-slide">
+            <div class="testimonial-item_inner">
+              <div class="inner__container">
+                <div class="user-avatar">
+                  <img src="{{ block.settings.image | img_url: 'master' }}">
+                </div>
+
+                <div class="user-info">
+                  <h4 class="name">{{ block.settings.name }}</h4>
+                  <p class="profession">{{ block.settings.profession }}</p>
+                </div>
+
+                <div class="user-quote">
+                  <span class="quotation-symbol start">“</span>
+                  <p class="quote-text">{{ block.settings.quote }}</p>
+                  <span class="quotation-symbol end">”</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="testimonial-swiper-wrapper">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <div class="testimonial-item slick-slide">
+            <div class="testimonial-item_inner">
+              <div class="inner__container">
+                <div class="user-avatar">
+                  <img src="{{ block.settings.image | img_url: 'master' }}">
+                </div>
+
+                <div class="user-info">
+                  <h4 class="name">{{ block.settings.name }}</h4>
+                  <p class="profession">{{ block.settings.profession }}</p>
+                </div>
+
+                <div class="user-quote">
+                  <span class="quotation-symbol start">“</span>
+                  <p class="quote-text">{{ block.settings.quote }}</p>
+                  <span class="quotation-symbol end">”</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {%- if customer- %}
+      {% if customer.tags contains 'Business' %}
+        {%
+          render 'button'
+          with
+          primary: true,
+          medium: true,
+          text: "B2B Account",
+          link: "/account"
+        %}
+      {% else %}
+        {%
+          render 'button'
+          with
+          primary: true,
+          medium: true,
+          text: "My Account",
+          link: "/account"
+        %}
+      {%- endif -%}
+    {%- else -%}
+      {%
+        render 'button'
+        with
+        primary: true,
+        medium: true,
+        text: "Order Now",
+        link: "/products/fuel-box"
+      %}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonial Swiper",
+  "tag": "section",
+  "class": "testimonial-swiper-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "profession",
+          "label": "Profession"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Swiper"
+    }
+  ]
+}
+{% endschema %}

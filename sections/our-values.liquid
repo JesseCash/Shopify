@@ -1,0 +1,69 @@
+<div class="our-values-wrapper page-spacing">
+  <div id="values" class="our-values-contain" data-anchor="true">
+    <div class="value-text">
+      <h3 class="heading">{{ section.settings.title }}</h3>
+
+      <div class="value-item">
+        {% render 'svg-icon-bicep' %}
+        <h4 class="value-name">{{ section.settings.value_1 }}</h4>
+      </div>
+
+      <div class="value-item">
+        {% render 'svg-icon-check' %}
+        <h4 class="value-name">{{ section.settings.value_2 }}</h4>
+      </div>
+
+      <div class="value-item">
+        {% render 'svg-icon-lightning' %}
+        <h4 class="value-name">{{ section.settings.value_3 }}</h4>
+      </div>
+    </div>
+
+    <div class="value-image">
+      <img src="{{ section.settings.image | img_url: 'master' }}">
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Our Values",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Value Information"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Value Items"
+    },
+    {
+      "type": "text",
+      "id": "value_1",
+      "label": "Value 1"
+    },
+    {
+      "type": "text",
+      "id": "value_2",
+      "label": "Value 2"
+    },
+    {
+      "type": "text",
+      "id": "value_3",
+      "label": "Value 3"
+    }
+  ]
+}
+{% endschema %}
